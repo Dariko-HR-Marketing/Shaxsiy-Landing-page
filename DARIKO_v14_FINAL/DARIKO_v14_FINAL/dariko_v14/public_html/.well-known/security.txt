@@ -1,0 +1,7 @@
+# DARIKO HR & MARKETING — xavfsizlik zaifliklari haqida xabar berish (RFC 9116)
+# Security vulnerability disclosure contact (RFC 9116)
+Contact: mailto:khikmatulloturaev@gmail.com
+Expires: 2027-09-25T00:00:00.000Z
+Preferred-Languages: uz, ru, en
+Canonical: https://dariko.uz/.well-known/security.txt
+Policy: https://dariko.uz/privacy.html

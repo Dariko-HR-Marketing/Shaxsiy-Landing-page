@@ -1,0 +1,54 @@
+[
+ {
+  "slug": "namuna-crm-va-raqamlashtirish-turizm",
+  "title": "Turizm kompaniyasida operatsion jarayonlarni raqamlashtirish va CRM joriy etish",
+  "client_name": "Sayna Tour MChJ (Khikmatullo Turaevning ish tajribasi, 2024–2026)",
+  "industry": "Turizm",
+  "challenge": "[NAMUNA — egasi to‘ldirishi kerak] Rezyumedagi ma’lumot: operatsion jarayonlarni to‘liq raqamlashtirish, CRM tizimini joriy qilish va mijozlar bilan ishlash tezkorligini oshirish vazifasi. Bu yerga boshlang‘ich holatni aniq yozing: murojaatlar qanday qabul qilinardi, qayerda yo‘qolardi.",
+  "approach": "Rezyumedagi ma’lumot: jarayonlarni raqamlashtirish va CRM tizimini joriy qilish; korporativ tadbirlar va jamoaviy birdamlikni mustahkamlash. Bu yerga aniq qadamlarni yozing (qaysi tizim, qancha vaqtda, kim ishtirok etdi).",
+  "result_summary": "[NAMUNA — egasi to‘ldirishi kerak] Real natijalarni raqamlar bilan kiriting (masalan, javob berish vaqti, yo‘qolgan murojaatlar ulushi). Raqamlar tasdiqlanmaguncha keysni nashr qilmang.",
+  "result_metrics": [
+   {
+    "label": "Murojaatga javob vaqti",
+    "before": "[?]",
+    "after": "[?]"
+   },
+   {
+    "label": "CRMda qayd etilgan murojaatlar ulushi",
+    "before": "[?]",
+    "after": "[?]"
+   }
+  ]
+ },
+ {
+  "slug": "namuna-sop-va-xarajatlarni-qisqartirish",
+  "title": "Xizmat ko‘rsatish korxonasida SOP ishlab chiqish va xarajatlarni optimallashtirish",
+  "client_name": "“Bugun-Kecha-Ertaga” MChJ (ish tajribasi, 2022–2024)",
+  "industry": "Xizmat ko‘rsatish",
+  "challenge": "[NAMUNA — egasi to‘ldirishi kerak] Rezyumedagi ma’lumot: kundalik operatsion faoliyat, xodimlar intizomi va moddiy-texnik resurslarni taqsimlash. Boshlang‘ich muammoni aniq yozing.",
+  "approach": "Rezyumedagi ma’lumot: standart operatsion tartiblar (SOP) ishlab chiqildi, xizmat ko‘rsatish sifatini oshirish va xarajatlarni qisqartirish choralari ko‘rildi.",
+  "result_summary": "[NAMUNA — egasi to‘ldirishi kerak] Xarajatlar va sifat bo‘yicha real, tasdiqlangan raqamlarni kiriting.",
+  "result_metrics": [
+   {
+    "label": "Operatsion xarajatlar",
+    "before": "[?]",
+    "after": "[?]"
+   },
+   {
+    "label": "Joriy etilgan SOPlar soni",
+    "before": "0",
+    "after": "[?]"
+   }
+  ]
+ },
+ {
+  "slug": "namuna-hududiy-raqamlashtirish-loyihalari",
+  "title": "Hududiy raqamlashtirish loyihalarini muvofiqlashtirish",
+  "client_name": "“AKTRM” DUK, Buxoro (ish tajribasi, 2018–2022)",
+  "industry": "Davlat sektori / AKT",
+  "challenge": "[NAMUNA — egasi to‘ldirishi kerak] Rezyumedagi ma’lumot: Buxoro viloyati hokimligi huzuridagi AKTni rivojlantirish markaziga rahbarlik; hududiy raqamlashtirish loyihalari.",
+  "approach": "Rezyumedagi ma’lumot: hududiy raqamlashtirish loyihalarini muvofiqlashtirish, davlat xizmatlari integratsiyasi va axborot xavfsizligini ta’minlash.",
+  "result_summary": "[NAMUNA — egasi to‘ldirishi kerak] Ommaviy e’lon qilish mumkin bo‘lgan, tasdiqlangan natijalarni kiriting.",
+  "result_metrics": []
+ }
+]

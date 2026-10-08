@@ -1,0 +1,13 @@
+Options -Indexes
+DirectoryIndex index.html
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^blog/?$ blog.php [L,QSA]
+RewriteRule ^blog/([a-z0-9-]{1,80})/?$ blog.php?slug=$1 [L,QSA]
+RewriteRule ^case-studies/?$ case-studies.php [L,QSA]
+RewriteRule ^case-studies/([a-z0-9-]{1,80})/?$ case-studies.php?slug=$1 [L,QSA]
+RewriteCond %{QUERY_STRING} (^|&)lang=ru(&|$)
+RewriteRule ^(index\.html)?$ ru.php [L,QSA]
+</IfModule>

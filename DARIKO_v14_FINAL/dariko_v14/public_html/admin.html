@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="same-origin">
+<title>DARIKO — Boshqaruv paneli</title>
+<link rel="icon" type="image/png" href="dariko-icon-dark-clean.png">
+<link rel="stylesheet" href="admin.css">
+<script defer src="admin.js"></script>
+<script defer src="assets/js/admin/admin-core.js"></script>
+<script defer src="assets/js/admin/admin-crm.js"></script>
+<script defer src="assets/js/admin/admin-booking.js"></script>
+<script defer src="assets/js/admin/admin-content.js"></script>
+<script defer src="assets/js/admin/admin-marketing.js"></script>
+<script defer src="assets/js/admin/admin-channels.js"></script>
+</head>
+<body>
+<!-- LOGIN -->
+<section id="login" class="login" hidden>
+  <div class="login-card">
+    <div class="brand"><span class="brand-mark">D</span><div><strong>DARIKO</strong><small>Boshqaruv paneli</small></div></div>
+    <h1>Administrator kirishi</h1>
+    <form id="loginForm" autocomplete="on">
+      <label for="password">Parol</label>
+      <input id="password" type="password" name="password" autocomplete="current-password" required maxlength="256">
+      <button class="btn primary block" type="submit">Kirish</button>
+      <p id="loginError" class="error" role="alert"></p>
+    </form>
+    <details class="help">
+      <summary>Birinchi marta qanday kiriladi?</summary>
+      <ol>
+        <li>Hostingda <code>setup.php</code> sahifasini oching va serverdagi bir martalik kod bilan kamida 16 belgili parol yarating.</li>
+        <li><code>storage</code> papkasi <code>public_html</code> dan tashqarida bo‘lishi shart.</li>
+        <li>Talablar: PHP 8.2+, <code>gd</code>, <code>mbstring</code>, <code>pdo_sqlite</code>, (tarjima uchun) <code>curl</code>.</li>
+        <li>So‘ng <code>setup.php</code> faylini serverdan o‘chiring.</li>
+      </ol>
+    </details>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="app" class="app" hidden>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">D</span><div><strong>DARIKO</strong><small>Boshqaruv paneli</small></div></div>
+    <nav class="nav" aria-label="Bo‘limlar">
+      <button data-tab="dashboard" class="active">Umumiy ko‘rinish</button>
+      <button data-tab="crm">CRM · Murojaatlar <span id="crmBadge" class="badge" hidden></span></button>
+      <button data-tab="calendar">Bron kalendari</button>
+      <button data-tab="blog">Blog</button>
+      <button data-tab="cases">Keyslar</button>
+      <button data-tab="testimonials">Mijozlar fikri</button>
+      <button data-tab="newsletter">Newsletter</button>
+      <button data-tab="ab">A/B testlar</button>
+      <button data-tab="channels">Kanallar sozlamalari</button>
+      <button data-tab="texts">Matnlar</button>
+      <button data-tab="team">Kengash va bosh surat</button>
+      <button data-tab="assets">Logo va favicon</button>
+      <button data-tab="settings">Sozlamalar</button>
+      <button data-tab="security">Xavfsizlik</button>
+    </nav>
+    <div class="sidebar-foot">
+      <a class="btn ghost block" href="/" target="_blank" rel="noopener noreferrer">Saytni ko‘rish ↗</a>
+      <button id="logout" class="btn ghost block" type="button">Chiqish</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <!-- DASHBOARD -->
+    <section id="tab-dashboard" class="tab">
+      <header class="page-head">
+        <div><h1>Umumiy ko‘rinish</h1><p class="muted">Anonim sayt statistikasi (IP saqlanmaydi, cookie yo‘q).</p></div>
+        <div class="seg" role="group" aria-label="Davr">
+          <button data-period="today">Bugun</button>
+          <button data-period="7d" class="active">7 kun</button>
+          <button data-period="30d">30 kun</button>
+          <button data-period="90d">90 kun</button>
+        </div>
+      </header>
+      <p id="analyticsError" class="error" hidden></p>
+      <div class="kpis">
+        <div class="kpi live"><span class="kpi-label"><span class="pulse" aria-hidden="true"></span>Hozir onlayn</span><strong id="kOnline">–</strong><small>oxirgi 2 daqiqa</small></div>
+        <div class="kpi"><span class="kpi-label">Ko‘rishlar</span><strong id="kViews">–</strong><small id="kPeriod">tanlangan davr</small></div>
+        <div class="kpi"><span class="kpi-label">Sessiyalar</span><strong id="kSessions">–</strong><small>noyob brauzer oynalari</small></div>
+        <div class="kpi"><span class="kpi-label">Tashrifchilar</span><strong id="kVisitors">–</strong><small>kunlik taxminiy</small></div>
+        <div class="kpi"><span class="kpi-label">Jami ko‘rishlar</span><strong id="kAll">–</strong><small>butun davr (13 oy)</small></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Kunlik ko‘rishlar — oxirgi 30 kun</h2><span id="trendNote" class="muted small"></span></div>
+        <div id="trend" class="chart" role="img" aria-label="Oxirgi 30 kunlik ko‘rishlar grafigi"></div>
+        <div id="tip" class="tip" hidden></div>
+      </div>
+
+      <div class="grid3">
+        <div class="card"><h2>Qurilma turi</h2><div id="bDevice" class="bars"></div></div>
+        <div class="card"><h2>Brauzer</h2><div id="bBrowser" class="bars"></div></div>
+        <div class="card"><h2>Operatsion tizim</h2><div id="bOs" class="bars"></div></div>
+      </div>
+      <div class="grid3">
+        <div class="card"><h2>Top sahifalar</h2><div id="bPath" class="bars"></div></div>
+        <div class="card"><h2>Qayerdan kelishdi</h2><div id="bRef" class="bars"></div></div>
+        <div class="card"><h2>Til</h2><div id="bLang" class="bars"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Hozir saytda</h2><span class="muted small">har 15 soniyada yangilanadi · <span id="liveUpdated">–</span></span></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Sessiya</th><th>Sahifa</th><th>Qurilma</th><th>Brauzer</th><th>OT</th><th>Til</th><th>Saytda</th><th>Oxirgi faollik</th></tr></thead>
+            <tbody id="liveRows"><tr><td colspan="8" class="muted">Yuklanmoqda…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- v7: CRM -->
+    <section id="tab-crm" class="tab" hidden>
+      <header class="page-head"><div><h1>CRM — yagona murojaatlar oynasi</h1><p class="muted">Sayt formasi, bron, Telegram, Instagram va Facebook murojaatlari bir joyda.</p></div>
+        <button id="leadNew" class="btn primary" type="button">+ Qo‘lda qo‘shish</button></header>
+      <div class="toolbar card">
+        <input id="leadSearch" type="search" placeholder="Qidirish: ism, telefon, email, @username" aria-label="Murojaatlarni qidirish">
+        <select id="leadStatus" aria-label="Holat"><option value="">Barcha holatlar</option><option value="yangi">Yangi</option><option value="aloqada">Aloqada</option><option value="muvaffaqiyatli">Muvaffaqiyatli</option><option value="yopilgan">Yopilgan</option></select>
+        <select id="leadSource" aria-label="Manba"><option value="">Barcha manbalar</option><option value="web_form">Sayt formasi</option><option value="booking">Bron</option><option value="telegram">Telegram</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="manual">Qo‘lda</option></select>
+        <span id="leadCounts" class="muted small"></span>
+      </div>
+      <div class="crm">
+        <div class="card crm-list"><div id="leadRows" class="lead-rows"><p class="muted">Yuklanmoqda…</p></div></div>
+        <div class="card crm-detail" id="leadDetail"><p class="muted">Chapdagi ro‘yxatdan murojaatni tanlang.</p></div>
+      </div>
+    </section>
+
+    <!-- v7: Bron kalendari -->
+    <section id="tab-calendar" class="tab" hidden>
+      <header class="page-head"><div><h1>Bron kalendari</h1><p class="muted">Tashrifchilar faqat siz belgilagan bo‘sh vaqtlarni tanlay oladi. Bir vaqtga faqat bitta faol bron.</p></div></header>
+      <div class="card">
+        <div class="card-head"><div class="row cal-nav"><button id="calPrev" class="btn ghost" type="button" aria-label="Oldingi oy">‹</button><h2 id="calTitle">–</h2><button id="calNext" class="btn ghost" type="button" aria-label="Keyingi oy">›</button></div>
+          <span class="muted small"><span class="dot pending"></span> kutilmoqda <span class="dot confirmed"></span> tasdiqlangan <span class="dot cancelled"></span> bekor <span class="dot closed"></span> yopiq kun</span></div>
+        <div id="calGrid" class="cal"></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2 id="calDayTitle">Kun tanlanmagan</h2><div id="calDay"></div></div>
+        <div class="card"><h2>Ish vaqti (haftalik)</h2><p class="hint">Har kun uchun oraliqlar, vergul bilan: <code>09:00-13:00, 14:00-19:00</code>. Bo‘sh = dam olish kuni.</p><div id="availForm"></div></div>
+      </div>
+    </section>
+
+    <!-- v7: Blog -->
+    <section id="tab-blog" class="tab" hidden>
+      <header class="page-head"><div><h1>Blog</h1><p class="muted">Matn formati: oddiy Markdown (<code>## sarlavha</code>, <code>**qalin**</code>, <code>- ro‘yxat</code>, <code>[havola](https://…)</code>). HTML qabul qilinmaydi — xavfsizlik uchun.</p></div>
+        <button id="postNew" class="btn primary" type="button">+ Yangi maqola</button></header>
+      <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Sarlavha</th><th>Holat</th><th>Sana</th><th></th></tr></thead><tbody id="postRows"></tbody></table></div></div>
+      <div id="postEditor" class="card" hidden></div>
+    </section>
+
+    <!-- v7: Keyslar -->
+    <section id="tab-cases" class="tab" hidden>
+      <header class="page-head"><div><h1>Keyslar (case studies)</h1><p class="muted">Faqat mijoz roziligi bilan va tasdiqlangan raqamlar bilan nashr qiling. «Namuna» belgili yozuvlar rezyumedan olingan qoralama.</p></div>
+        <button id="caseNew" class="btn primary" type="button">+ Yangi keys</button></header>
+      <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Sarlavha</th><th>Soha</th><th>Holat</th><th></th></tr></thead><tbody id="caseRows"></tbody></table></div></div>
+      <div id="caseEditor" class="card" hidden></div>
+    </section>
+
+    <!-- v7: Fikrlar -->
+    <section id="tab-testimonials" class="tab" hidden>
+      <header class="page-head"><div><h1>Mijozlar fikri</h1><p class="muted">Faqat haqiqiy, mijoz roziligi bilan olingan fikrlarni qo‘shing. Nashr qilingan fikr bosh sahifada va «Keyslar» sahifasida ko‘rinadi.</p></div>
+        <button id="testiNew" class="btn primary" type="button">+ Fikr qo‘shish</button></header>
+      <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Tartib</th><th>Mijoz</th><th>Fikr</th><th>Manba</th><th>Holat</th><th></th></tr></thead><tbody id="testiRows"></tbody></table></div></div>
+      <div id="testiEditor" class="card" hidden></div>
+    </section>
+
+    <!-- v7: Newsletter -->
+    <section id="tab-newsletter" class="tab" hidden>
+      <header class="page-head"><div><h1>Newsletter</h1><p class="muted">Double opt-in: faqat emaildagi havolani tasdiqlaganlarga xat yuboriladi. Har bir xatda obunani bekor qilish havolasi bor.</p></div></header>
+      <div class="card"><h2>Ommaviy obuna marshruti</h2>
+        <label class="check"><input type="checkbox" id="nlEnabled"> Obuna API’sini yoqish (<code>newsletter/subscribe</code>)</label>
+        <p class="hint">Standart: <b>o‘chiq</b>. Saytda obuna formasi yo‘q (v8 da olib tashlangan); o‘chiq holatda API 404 qaytaradi va begona manzillarga tasdiqlash xati yuborilmaydi. Faqat saytga obuna formasini qayta qo‘shganingizda yoqing.</p></div>
+      <div class="kpis small-kpis" id="nlKpis"></div>
+      <div class="grid2">
+        <div class="card"><h2>Xat yuborish</h2><p class="hint" id="nlMode"></p>
+          <label for="nlSubject">Mavzu</label><input id="nlSubject" maxlength="150">
+          <label for="nlBody">Matn (oddiy matn)</label><textarea id="nlBody" rows="8" maxlength="20000"></textarea>
+          <div class="row"><button id="nlSend" class="btn primary" type="button">Barcha tasdiqlanganlarga yuborish</button><span id="nlProgress" class="muted small"></span></div>
+          <p class="hint">Xatlar 25 tadan partiyalarda, orada pauza bilan yuboriladi (hosting limitlari uchun). Oynani yopmang.</p></div>
+        <div class="card"><h2>Yuborilgan xatlar</h2><div class="table-wrap"><table class="table"><thead><tr><th>Sana</th><th>Mavzu</th><th>Yuborildi</th><th>Xato</th></tr></thead><tbody id="campRows"></tbody></table></div></div>
+      </div>
+      <div class="card"><h2>Obunachilar</h2><div class="table-wrap"><table class="table"><thead><tr><th>Email</th><th>Ism</th><th>Holat</th><th>Sana</th><th></th></tr></thead><tbody id="subRows"></tbody></table></div></div>
+    </section>
+
+    <!-- v7: A/B -->
+    <section id="tab-ab" class="tab" hidden>
+      <header class="page-head"><div><h1>A/B testlar</h1><p class="muted">Bosh sahifadagi sarlavha yoki asosiy tugma matnining variantlarini solishtirish. Har bir sessiya doim bir xil variantni ko‘radi.</p></div>
+        <button id="abNew" class="btn primary" type="button">+ Yangi test</button></header>
+      <p class="card hint">⚠️ Xulosa chiqarishdan oldin har bir variant kamida bir necha yuz sessiya to‘plasin. Kichik farqlar (masalan, 3.1% va 3.4%) tasodif bo‘lishi mumkin — statistik ahamiyatlilik hisoblanmaydi. DNT/GPC yoqilgan tashrifchilar testga kirmaydi.</p>
+      <div id="abEditor" class="card" hidden></div>
+      <div id="abList"></div>
+    </section>
+
+    <!-- v7: Kanallar -->
+    <section id="tab-channels" class="tab" hidden>
+      <header class="page-head"><div><h1>Kanallar sozlamalari</h1><p class="muted">Maxfiy kalitlar serverda (<code>storage/</code>, web-root’dan tashqarida) saqlanadi va bu yerda faqat oxirgi 4 belgisi ko‘rinadi. To‘liq qo‘llanma: <b>CRM_QOLLANMA_UZ.md</b>.</p></div></header>
+      <div class="grid2">
+        <div class="card"><h2>Telegram bot</h2><div id="chTelegram"></div></div>
+        <div class="card"><h2>Instagram + Facebook (Meta)</h2><div id="chMeta"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2>Email (SMTP) va xabarnomalar</h2><div id="chMail"></div></div>
+        <div class="card"><h2>Holat tekshiruvi (uptime)</h2><div id="chHealth"></div></div>
+      </div>
+    </section>
+
+    <!-- TEXTS -->
+    <section id="tab-texts" class="tab" hidden>
+      <header class="page-head"><div><h1>Matnlar</h1><p class="muted">O‘zbekcha matn o‘zgarganda ruscha tarjima taklif qilinadi. Ruschani tekshirib «Tasdiqlandi» belgisini qo‘ying.</p></div></header>
+      <div class="toolbar card">
+        <input id="search" type="search" placeholder="Qidirish: masalan, Marketing" aria-label="Matnlarni qidirish">
+        <label class="check"><input type="checkbox" id="draftOnly"> Faqat tasdiqlanmaganlar</label>
+        <span id="textCount" class="muted small"></span>
+      </div>
+      <div id="entries"></div>
+      <button id="moreTexts" class="btn ghost block" type="button" hidden>Yana ko‘rsatish</button>
+    </section>
+
+    <!-- TEAM + HERO (v4) -->
+    <section id="tab-team" class="tab" hidden>
+      <header class="page-head"><div><h1>Kuzatuv kengashi va bosh sahifa surati</h1><p class="muted">Surat: PNG/JPEG/WebP, 5 MB gacha (server qayta kodlaydi). Rezyume: faqat PDF, 10 MB gacha; JavaScript/ilovali PDF qabul qilinmaydi. Ism va lavozim matnlari «Matnlar» bo‘limida (t150–t161).</p></div></header>
+      <div class="card"><h2>Bosh sahifa doirasi («KT» o‘rniga surat)</h2><div id="heroInputs"></div></div>
+      <div id="teamInputs" class="asset-grid team-grid"></div>
+    </section>
+
+    <!-- ASSETS -->
+    <section id="tab-assets" class="tab" hidden>
+      <header class="page-head"><div><h1>Logo va favicon</h1><p class="muted">PNG, JPEG yoki WebP; 5 MB gacha. Server rasmni qayta kodlab PNG sifatida saqlaydi.</p></div></header>
+      <div id="assetInputs" class="asset-grid"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="tab-settings" class="tab" hidden>
+      <header class="page-head"><div><h1>Sozlamalar</h1><p class="muted">Aloqa ma’lumotlari (NAP) xaritalar va qidiruv tizimlaridagi ma’lumot bilan <b>aynan bir xil</b> bo‘lishi kerak.</p></div></header>
+      <div class="grid2">
+        <div class="card"><h2>Brend ranglari</h2><div id="themeInputs"></div></div>
+        <div class="card"><h2>Aloqa</h2><div id="contactInputs"></div></div>
+      </div>
+      <div class="card"><h2>SEO</h2><div id="seoInputs"></div></div>
+    </section>
+
+    <!-- SECURITY -->
+    <section id="tab-security" class="tab" hidden>
+      <header class="page-head"><div><h1>Xavfsizlik</h1><p class="muted">Server holati tekshiruvi va audit jurnali (kirishlar, saqlashlar, yuklashlar).</p></div></header>
+      <div id="secChecks" class="checks"></div>
+      <div class="card">
+        <div class="card-head"><h2>Audit jurnali</h2><button id="secReload" class="btn ghost" type="button">Yangilash</button></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Vaqt</th><th>Hodisa</th><th>Tafsilot</th><th>IP (xesh)</th><th>Brauzer</th></tr></thead><tbody id="auditRows"></tbody></table></div>
+      </div>
+      <div class="card"><h2>Zaiflik haqida xabar berish</h2><p class="muted">Sayt <a href="/.well-known/security.txt" target="_blank" rel="noopener">/.well-known/security.txt</a> (RFC 9116) faylini e’lon qiladi. Muddati (Expires) yiliga bir marta yangilanishi kerak.</p></div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

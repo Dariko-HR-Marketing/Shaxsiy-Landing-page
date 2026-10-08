@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: dariko-v14-final
+    env: static
+    buildCommand: ""
+    staticPublishPath: ./dariko_v14/public_html
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
