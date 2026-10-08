@@ -1,0 +1,17 @@
+# Storage & Runtime data
+storage/auth.json
+storage/setup_token.txt
+storage/*.sqlite
+storage/*.db
+storage/*.log
+storage/.flock_selftest
+
+# Uploads
+public_html/uploads/*
+!public_html/uploads/.htaccess
+
+# OS & Environment files
+.env
+.DS_Store
+Thumbs.db
+*.tmp
